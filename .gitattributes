@@ -1,0 +1,34 @@
+# Normalize line endings on checkout/commit so the repo stays consistent
+# across Linux (LF) and Windows (CRLF) clones.
+
+*               text=auto eol=lf
+
+# Shell scripts must be LF (not CRLF) or they break on Linux
+*.sh            text eol=lf
+*.bash          text eol=lf
+launch_engine.* text eol=lf
+install.sh      text eol=lf
+make_desktop.sh text eol=lf
+
+# Windows-only scripts are CRLF
+*.bat           text eol=crlf
+*.cmd           text eol=crlf
+
+# PowerShell scripts work fine with either; force LF for cross-platform editing
+*.ps1           text eol=lf
+
+# Python source must be LF
+*.py            text eol=lf
+
+# These should never be touched (binary)
+*.png           binary
+*.jpg           binary
+*.jpeg          binary
+*.gif           binary
+*.ico           binary
+*.pdf           binary
+*.gguf          binary
+
+# Generated files we don't want diff noise for
+package-lock.json binary
+*.lock           binary

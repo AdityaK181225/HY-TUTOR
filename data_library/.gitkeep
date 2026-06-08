@@ -1,0 +1,3 @@
+# Keep this directory in git. Generated per-user state goes inside, but
+# the directory skeleton is part of the repo so a fresh clone has a
+# valid write target for the HY-TUTOR pipeline.

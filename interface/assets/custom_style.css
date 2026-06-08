@@ -1,0 +1,917 @@
+/* =========================================================================
+   HY-TUTOR: SCHOLARLY INK UI STYLESHEET
+   Target: Asus TUF F15 (4GB VRAM)
+   Mandate: Zero VRAM-heavy animations, no backdrop-filters, solid hex colors.
+   Theme: Scholarly Ink (Warm Paper, Deep Navy Ink, Soft Shadows, Manuscript Feel)
+
+   Design Token System: all spacing, radii, shadows, and colors are defined
+   as CSS custom properties for consistency and easy theming.
+========================================================================= */
+
+/* ===========================================
+   0. DESIGN TOKENS
+   =========================================== */
+
+:root {
+    /* --- Palette --- */
+    --paper-bg: #FAF8F5;
+    --white-surface: #FFFFFF;
+    --ink-navy: #1B2A4A;
+    --ink-blue: #2C4A7C;
+    --ink-bright: #3D5A99;
+    --steel-muted: #C8D0DC;
+    --text-main: #1A1A2E;
+    --text-secondary: #4A5568;
+    --text-on-dark: #F0F2F5;
+    --text-on-dark-muted: #A0AEC0;
+    --success-ink: #2D8659;
+    --warning-ink: #D4A843;
+    --error-ink: #B5344A;
+    --warning-bg: #FFF9E6;
+    --success-bg: #EDFCF2;
+    --error-bg: #FDE8EC;
+
+    /* --- Typography --- */
+    --hytutor-font-family-body: 'Georgia', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+    --hytutor-font-family-ui: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+    --hytutor-font-family-code: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+    --hytutor-font-size-base: 16px;
+
+    /* --- Spacing Scale --- */
+    --sp-xs: 0.25rem;
+    --sp-sm: 0.5rem;
+    --sp-md: 1rem;
+    --sp-lg: 1.5rem;
+    --sp-xl: 2rem;
+    --sp-2xl: 3rem;
+
+    /* --- Border Radius Scale --- */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 10px;
+    --radius-xl: 14px;
+
+    /* --- Shadow Scale --- */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 1px 4px rgba(0, 0, 0, 0.10);
+    --shadow-lg: 0 2px 8px rgba(0, 0, 0, 0.12);
+
+    /* --- Transition --- */
+    --transition-fast: 0.1s ease-in-out;
+    --transition-normal: 0.2s ease-in-out;
+
+    /* --- Dynamic overrides (set by build_dynamic_css) --- */
+    --hytutor-font-size: 16px;
+    --hytutor-accent: #2C4A7C;
+    --hytutor-border-width: 1px;
+}
+
+/* ===========================================
+   1. REDUCED MOTION (accessibility)
+   =========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ===========================================
+   2. APP CONTAINER AND TYPOGRAPHY
+   =========================================== */
+
+.stApp {
+    background-color: var(--paper-bg) !important;
+    color: var(--text-main) !important;
+    font-family: var(--hytutor-font-family-body);
+    font-size: var(--hytutor-font-size-base);
+}
+
+p, li, h1, h2, h3, h4, h5, h6 {
+    color: var(--text-main) !important;
+}
+
+/* ===========================================
+   3. SIDEBAR (Deep Navy Ink)
+   =========================================== */
+
+[data-testid="stSidebar"] {
+    /* User-customisable: `build_dynamic_css` injects --hytutor-sidebar-bg
+       and --hytutor-sidebar-border. The hard-coded --ink-navy / --ink-blue
+       values act as fallbacks so the stylesheet still looks correct if
+       those dynamic variables are ever absent. */
+    background-color: var(--hytutor-sidebar-bg, var(--ink-navy)) !important;
+    border-right: 3px solid var(--hytutor-sidebar-border, var(--ink-blue)) !important;
+}
+
+[data-testid="stSidebar"] p,
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3,
+[data-testid="stSidebar"] label,
+[data-testid="stSidebar"] span {
+    color: var(--hytutor-sidebar-text, #FFFFFF) !important;
+}
+
+[data-testid="stSidebar"] .stMetricLabel,
+[data-testid="stSidebar"] small,
+[data-testid="stSidebar"] [data-testid="stCaptionContainer"] {
+    color: #FFFFFF !important;
+}
+
+[data-testid="stSidebar"] hr {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+[data-testid="stSidebar"] .stSelectbox label,
+[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] {
+    color: var(--text-on-dark) !important;
+}
+
+/* ===========================================
+   4. BUTTONS
+   =========================================== */
+
+.stButton > button {
+    /* User-customisable: `build_dynamic_css` injects --hytutor-button-bg
+       and --hytutor-button-border. The hard-coded --ink-blue / --ink-navy
+       values act as fallbacks so the stylesheet still looks correct if
+       those dynamic variables are ever absent. */
+    background-color: var(--hytutor-button-bg, var(--ink-blue)) !important;
+    color: #FFFFFF !important;
+    border: 2px solid var(--hytutor-button-border, var(--ink-navy)) !important;
+    border-radius: var(--radius-md) !important;
+    font-weight: 600 !important;
+    font-family: var(--hytutor-font-family-ui) !important;
+    letter-spacing: 0.2px !important;
+    transition: background-color var(--transition-fast) !important;
+}
+
+.stButton > button:hover {
+    background-color: var(--hytutor-button-border, var(--ink-navy)) !important;
+    border-color: var(--hytutor-button-bg, var(--ink-blue)) !important;
+}
+
+.stButton > button:active {
+    background-color: var(--ink-bright) !important;
+}
+
+.stButton > button:focus-visible {
+    outline: 2px solid var(--ink-bright) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 3px rgba(61, 90, 153, 0.3) !important;
+}
+
+/* Catch-all: force any text descendants inside Streamlit buttons to
+   pure white. The global `p { color: text-main !important }` rule can
+   otherwise win by specificity, leaving button labels dark on the
+   ink-blue background. Mirrors the popover button treatment. */
+.stButton > button p,
+.stButton > button span,
+.stButton > button div,
+.stButton > button em,
+.stButton > button strong {
+    color: #FFFFFF !important;
+}
+
+/* Primary buttons */
+button[kind="primary"],
+.stButton > button[data-testid="stBaseButton-primary"] {
+    background-color: var(--hytutor-button-bg, var(--ink-bright)) !important;
+    border-color: var(--hytutor-button-border, var(--ink-blue)) !important;
+}
+
+button[kind="primary"]:hover,
+.stButton > button[data-testid="stBaseButton-primary"]:hover {
+    background-color: var(--hytutor-button-border, var(--ink-navy)) !important;
+}
+
+/* ===========================================
+   5. FORM INPUTS
+   =========================================== */
+
+.stTextInput > div > div > input,
+.stSelectbox > div > div > select,
+.stChatInputContainer > div {
+    background-color: #FFFFFF !important;
+    color: var(--text-main) !important;
+    border: 2px solid var(--steel-muted) !important;
+    border-radius: var(--radius-md) !important;
+    font-family: var(--hytutor-font-family-ui) !important;
+}
+
+.stTextInput > div > div > input:focus,
+.stSelectbox > div > div > select:focus {
+    border-color: var(--ink-blue) !important;
+    box-shadow: 0 0 0 2px rgba(44, 74, 124, 0.15) !important;
+}
+
+.stChatInputContainer {
+    border-radius: var(--radius-md) !important;
+}
+
+.stFileUploader {
+    border: 2px solid var(--steel-muted) !important;
+    border-radius: var(--radius-md) !important;
+}
+
+/* ===========================================
+   6. CARDS, PANELS AND CONTAINERS
+   =========================================== */
+
+div[data-testid="stVerticalBlock"] > div > div[data-testid="stVerticalBlockBorderWrapper"] {
+    background-color: #FFFFFF !important;
+    border: 1px solid var(--steel-muted) !important;
+    border-radius: var(--radius-lg) !important;
+    padding: var(--sp-md) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+div[data-testid="stForm"] {
+    border: 1px solid var(--steel-muted) !important;
+    border-radius: var(--radius-lg) !important;
+    background-color: #FFFFFF !important;
+    box-shadow: var(--shadow-md) !important;
+    padding: var(--sp-md) !important;
+}
+
+/* Expanders */
+div[data-testid="stExpander"] {
+    background-color: #FFFFFF !important;
+    border: 1px solid var(--steel-muted) !important;
+    border-left: 4px solid var(--ink-blue) !important;
+    border-radius: var(--radius-md) !important;
+    margin-bottom: var(--sp-sm) !important;
+    box-shadow: var(--shadow-md) !important;
+    transition: box-shadow var(--transition-fast) !important;
+}
+
+div[data-testid="stExpander"]:hover {
+    box-shadow: var(--shadow-lg) !important;
+}
+
+div[data-testid="stExpander"] summary {
+    font-family: var(--hytutor-font-family-body) !important;
+    font-weight: 600 !important;
+    color: var(--ink-navy) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   EXPANDER CHEVRON FIX — Pure CSS, works offline on all browsers
+   ══════════════════════════════════════════════════════════════════════════
+   Streamlit renders expander headers with a <span> that contains either:
+     - A Material Icon glyph (when font loads): renders as ▶ arrow graphic
+     - Raw icon-name text (when font fails): shows "arrow_right" as text
+
+   This fix:
+     1. Hides the browser's default <details> marker
+     2. Always renders a CSS-only Unicode chevron (▸/▾) via ::before
+     3. Collapses the broken icon span to zero width (hides raw text)
+     4. Colors the chevron in ink-blue theme
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Hide browser's default details marker */
+div[data-testid="stExpander"] summary::-webkit-details-marker {
+    display: none !important;
+}
+div[data-testid="stExpander"] summary::marker {
+    display: none !important;
+    content: "" !important;
+}
+
+/* Add a CSS-only chevron (▸) before every expander summary */
+div[data-testid="stExpander"] summary::before {
+    content: "\25B8" !important;    /* ▸ right-pointing small triangle */
+    display: inline-block !important;
+    width: 1.2em !important;
+    margin-right: 0.3em !important;
+    color: var(--ink-blue) !important;
+    font-size: 1.05em !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    transition: transform 0.15s ease-in-out !important;
+    transform-origin: center center !important;
+    flex-shrink: 0 !important;
+}
+
+/* When expanded: show downward chevron (▾) */
+div[data-testid="stExpander"][aria-expanded="true"] summary::before,
+div[data-testid="stExpander"]:has(> details[open]) summary::before {
+    content: "\25BE" !important;    /* ▾ down-pointing small triangle */
+}
+
+/* Hover color change */
+div[data-testid="stExpander"]:hover summary::before {
+    color: var(--ink-bright) !important;
+}
+
+/* Hide Streamlit's Material Icon spans (glyph or raw fallback text)
+   INSIDE the expander summary. The icon testid is `stIconMaterial`.
+   The title text is in a separate <div data-testid="stMarkdownContainer">,
+   not in a span, so it is NOT affected by these rules.
+   The CSS ::before above provides our own chevron. */
+div[data-testid="stExpander"] summary span[data-testid="stIconMaterial"],
+div[data-testid="stExpander"] summary [class*="material-icons"] {
+    display: none !important;
+}
+
+
+
+/* Ensure summary layout is flex for proper alignment */
+div[data-testid="stExpander"] summary {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0 !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   POPOVER / BUTTON ICON FIX — Hide broken Material Icons text
+   ══════════════════════════════════════════════════════════════════════════
+   When Material Icons font fails to load, Streamlit buttons/popovers show
+   raw icon names like "expand_more", "settings" as text. This hides those
+   broken icon spans.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Hide broken Material Icon spans inside any Streamlit button/popover.
+   Targeted narrowly so we don't accidentally hide label text. */
+button span.material-icons,
+button span.material-icons-outlined,
+button span[class*="material-icons"],
+button [data-testid="stIconMaterial"] {
+    width: 0 !important;
+    overflow: hidden !important;
+    display: inline-block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 0 !important;
+    visibility: hidden !important;
+}
+
+
+/* Also hide broken icon text in status badges, pipeline labels, and other UI */
+span.material-icons,
+span.material-icons-outlined {
+    font-family: 'Material Symbols Outlined', 'Material Icons', 'Material Icons Outlined', system-ui, sans-serif !important;
+    font-feature-settings: 'liga' !important;
+    -webkit-font-smoothing: antialiased !important;
+}
+
+/* ── Settings popover button: compact gear pill ── */
+button[data-testid="stPopoverButton"] {
+    min-width: 130px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 14px !important;
+    border-radius: 10px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: var(--ink-blue) !important;
+    border: 2px solid var(--ink-navy) !important;
+    color: #FFFFFF !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    font-family: var(--hytutor-font-family-ui) !important;
+    margin: 6px !important;
+    box-shadow: var(--shadow-md) !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+    transition: background-color 0.1s ease, transform 0.1s ease !important;
+}
+
+
+button[data-testid="stPopoverButton"]:hover {
+    background-color: var(--ink-bright) !important;
+    transform: scale(1.05) !important;
+}
+
+/* Style the popover button label. The inner <p> inherits the global
+   "p { color: text-main !important; }" rule, which would make the
+   white-on-white text invisible on the dark blue button background.
+   Force white color and center the gear+label inline. */
+button[data-testid="stPopoverButton"] p,
+button[data-testid="stPopoverButton"] div[class*="stMarkdown"] p,
+button[data-testid="stPopoverButton"] [data-testid="stMarkdownContainer"] p {
+    color: #FFFFFF !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 0.95rem !important;
+    line-height: 1 !important;
+    font-weight: 600 !important;
+}
+
+
+/* ── Sidebar toggle button (hamburger — three parallel lines) ──
+   Streamlit renders this as a tiny "headerNoPadding" button with a
+   broken `keyboard_double_arrow_left/right` Material Icon span.
+   We:
+     1. Force the wrapper to be ALWAYS visible (Streamlit hides it on idle)
+     2. Hide the broken icon span
+     3. Restyle the button as an ink-blue pill (matches Settings button)
+     4. Draw three parallel horizontal white lines (hamburger menu icon)
+        via a stacked CSS background-image — direction is irrelevant
+        because the same icon makes sense for both open and closed.
+   The hamburger glyph is the same in both states (open / closed sidebar),
+   since the icon represents the MENU rather than a direction. */
+[data-testid="stSidebarCollapseButton"] {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+button[data-testid="stBaseButton-headerNoPadding"],
+[data-testid="stSidebar"] button[data-testid="stSidebarCollapseButton"],
+[data-testid="stSidebar"] button[aria-label="Close sidebar"],
+[data-testid="stSidebar"] button[aria-label="Open sidebar"] {
+    visibility: visible !important;
+    opacity: 1 !important;
+    background-color: var(--ink-blue) !important;
+    border: 2px solid var(--ink-navy) !important;
+    border-radius: 10px !important;
+    min-width: 44px !important;
+    width: 44px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 !important;
+    margin: 6px !important;
+    color: #FFFFFF !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    box-shadow: var(--shadow-md) !important;
+    transition: background-color 0.1s ease, transform 0.1s ease !important;
+    position: relative !important;
+    /* Three parallel white lines drawn with stacked linear-gradients */
+    background-image:
+        linear-gradient(to right, #FFFFFF 0%, #FFFFFF 100%),
+        linear-gradient(to right, #FFFFFF 0%, #FFFFFF 100%),
+        linear-gradient(to right, #FFFFFF 0%, #FFFFFF 100%) !important;
+    background-size: 20px 2px, 20px 2px, 20px 2px !important;
+    background-position: center 9px, center 18px, center 27px !important;
+    background-repeat: no-repeat !important;
+    text-indent: -9999px !important;   /* Hide any leftover "keyboard_double_arrow_*" text */
+    overflow: hidden !important;
+}
+
+button[data-testid="stBaseButton-headerNoPadding"]:hover,
+[data-testid="stSidebar"] button[data-testid="stSidebarCollapseButton"]:hover,
+[data-testid="stSidebar"] button[aria-label="Close sidebar"]:hover,
+[data-testid="stSidebar"] button[aria-label="Open sidebar"]:hover {
+    background-color: var(--ink-bright) !important;
+    transform: scale(1.05) !important;
+    /* Re-declare the hamburger lines so the hover background doesn't erase them */
+    background-image:
+        linear-gradient(to right, #FFFFFF 0%, #FFFFFF 100%),
+        linear-gradient(to right, #FFFFFF 0%, #FFFFFF 100%),
+        linear-gradient(to right, #FFFFFF 0%, #FFFFFF 100%) !important;
+    background-size: 20px 2px, 20px 2px, 20px 2px !important;
+    background-position: center 9px, center 18px, center 27px !important;
+    background-repeat: no-repeat !important;
+}
+
+/* Hide the broken Material Icon span inside the toggle button */
+button[data-testid="stBaseButton-headerNoPadding"] [data-testid="stIconMaterial"],
+button[data-testid="stBaseButton-headerNoPadding"] span.material-icons,
+button[data-testid="stBaseButton-headerNoPadding"] span.material-icons-outlined,
+button[data-testid="stBaseButton-headerNoPadding"] span[class*="material-icons"],
+[data-testid="stSidebar"] button[data-testid="stSidebarCollapseButton"] [data-testid="stIconMaterial"],
+[data-testid="stSidebar"] button[aria-label="Close sidebar"] [data-testid="stIconMaterial"],
+[data-testid="stSidebar"] button[aria-label="Open sidebar"] [data-testid="stIconMaterial"] {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    font-size: 0 !important;
+    visibility: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+
+
+[data-testid="stSidebarNav"] a[aria-current="page"]::before {
+    content: "▸" !important;
+    color: var(--ink-blue) !important;
+    margin-right: 6px !important;
+    font-weight: 700 !important;
+}
+
+/* ── Icon alignment utilities ── */
+.hy-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    vertical-align: middle !important;
+    line-height: 1 !important;
+    margin-right: 4px !important;
+}
+
+.hy-icon svg {
+    display: block !important;
+}
+
+/* ── Styled send button (for HTML-rendered send buttons) ── */
+.hy-send-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: var(--ink-blue) !important;
+    color: #FFFFFF !important;
+    border: 2px solid var(--ink-navy) !important;
+    border-radius: var(--radius-lg) !important;
+    font-size: 1.3rem !important;
+    min-height: 60px !important;
+    min-width: 100% !important;
+    width: 100% !important;
+    cursor: pointer !important;
+    transition: background-color var(--transition-fast) !important;
+    padding: 0 !important;
+}
+
+.hy-send-btn:hover {
+    background-color: var(--ink-bright) !important;
+    border-color: var(--ink-blue) !important;
+}
+
+.hy-send-btn svg {
+    width: 22px !important;
+    height: 22px !important;
+}
+
+/* ── Navigation button icon styling ── */
+.hy-nav-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+/* ===========================================
+   7. ALERTS / CALLOUTS
+   =========================================== */
+
+div[data-testid="stAlert"] {
+    background-color: var(--white-surface) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--steel-muted) !important;
+    border-left: 4px solid var(--ink-blue) !important;
+    border-radius: var(--radius-md) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+div[data-testid="stAlert"][kind="success"] {
+    background-color: var(--success-bg) !important;
+    border-left-color: var(--success-ink) !important;
+}
+
+div[data-testid="stAlert"][kind="warning"] {
+    background-color: var(--warning-bg) !important;
+    border-left-color: var(--warning-ink) !important;
+}
+
+div[data-testid="stAlert"][kind="error"] {
+    background-color: var(--error-bg) !important;
+    border-left-color: var(--error-ink) !important;
+}
+
+/* ===========================================
+   8. HEADINGS
+   =========================================== */
+
+h3, h4 {
+    border-bottom: 2px solid var(--steel-muted) !important;
+    padding-bottom: var(--sp-xs) !important;
+    color: var(--ink-navy) !important;
+}
+
+/* ===========================================
+   9. TABS
+   =========================================== */
+
+.stTabs [data-baseweb="tab-list"] {
+    gap: 0;
+    background-color: #F5F6FA !important;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
+    padding: var(--sp-xs) !important;
+    border-bottom: 2px solid var(--steel-muted) !important;
+}
+
+.stTabs [data-baseweb="tab"] {
+    border-radius: var(--radius-md) var(--radius-md) 0 0 !important;
+    font-family: var(--hytutor-font-family-ui) !important;
+    font-weight: 600 !important;
+    color: var(--text-secondary) !important;
+    padding: var(--sp-sm) var(--sp-md) !important;
+    transition: color var(--transition-fast) !important;
+}
+
+.stTabs [data-baseweb="tab"]:hover {
+    color: var(--ink-navy) !important;
+}
+
+.stTabs [aria-selected="true"] {
+    background-color: #FFFFFF !important;
+    color: var(--ink-navy) !important;
+    border-bottom: 3px solid var(--ink-blue) !important;
+}
+
+/* ===========================================
+   10. CODE BLOCKS
+   =========================================== */
+
+code, pre {
+    background-color: #F5F6FA !important;
+    color: var(--ink-navy) !important;
+    border: 1px solid var(--steel-muted) !important;
+    border-radius: var(--radius-sm) !important;
+    font-family: var(--hytutor-font-family-code) !important;
+}
+
+code {
+    padding: 2px 6px !important;
+    font-size: 0.9em !important;
+}
+
+pre {
+    padding: var(--sp-md) !important;
+}
+
+/* ===========================================
+   11. PROGRESS BAR
+   =========================================== */
+
+.stProgress > div > div {
+    border-radius: var(--radius-sm) !important;
+}
+
+/* ===========================================
+   12. SPINNER
+   =========================================== */
+
+.stSpinner > div {
+    border-top-color: var(--ink-blue) !important;
+}
+
+/* ===========================================
+   13. DIVIDER
+   =========================================== */
+
+hr {
+    border-color: var(--steel-muted) !important;
+}
+
+/* ===========================================
+   14. CHAT BUBBLES (Applied by chat_box.py)
+   =========================================== */
+
+.tutor-bubble {
+    background-color: var(--white-surface);
+    border-left: 4px solid var(--ink-blue);
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    color: var(--text-main);
+    font-family: var(--hytutor-font-family-body);
+    font-size: 1.05rem;
+    line-height: 1.65;
+    border-top: 1px solid var(--steel-muted);
+    border-right: 1px solid var(--steel-muted);
+    border-bottom: 1px solid var(--steel-muted);
+    box-shadow: var(--shadow-sm);
+}
+
+.user-bubble {
+    background-color: #F0F4FA;
+    border-right: 4px solid var(--ink-bright);
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+    color: var(--text-main);
+    text-align: right;
+    font-family: var(--hytutor-font-family-ui);
+    border-top: 1px solid var(--steel-muted);
+    border-left: 1px solid var(--steel-muted);
+    border-bottom: 1px solid var(--steel-muted);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ===========================================
+   15. METRICS (Sidebar)
+   =========================================== */
+
+[data-testid="stMetricValue"] {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+}
+
+[data-testid="stMetricLabel"] {
+    color: #FFFFFF !important;
+}
+
+[data-testid="stMetricDelta"] {
+    color: #FFFFFF !important;
+}
+
+/* ===========================================
+   16. DYNAMICALLY INJECTED CLASSES
+   =========================================== */
+
+.metric-tile {
+    background-color: var(--white-surface);
+    border: var(--hytutor-border-width) solid var(--steel-muted);
+    border-left: 4px solid var(--hytutor-accent);
+    border-radius: var(--radius-lg);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow-sm);
+}
+
+.metric-tile .label {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 600;
+}
+
+.metric-tile .value {
+    font-size: 1.6rem;
+    color: var(--ink-navy);
+    font-weight: 700;
+    margin-top: 4px;
+}
+
+.metric-tile .sub {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.coming-soon-banner {
+    background-color: var(--warning-bg);
+    border: 1px solid #F0E4B8;
+    border-left: 4px solid var(--warning-ink);
+    color: #6B4F12;
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    margin: 8px 0 12px 0;
+}
+
+.coming-soon-badge {
+    display: inline-block;
+    background-color: var(--warning-ink);
+    color: var(--text-main);
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 8px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+.muted-small {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+}
+
+.kbd {
+    display: inline-block;
+    padding: 1px 6px;
+    background-color: #F5F6FA;
+    border: 1px solid var(--steel-muted);
+    border-radius: 4px;
+    font-family: var(--hytutor-font-family-code);
+    font-size: 0.8rem;
+}
+
+.update-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+}
+
+/* ===========================================
+   17. CHAT INPUT AREA
+   =========================================== */
+
+button[key="send_chat_btn"] {
+    background-color: var(--ink-blue) !important;
+    color: #FFFFFF !important;
+    border: 2px solid var(--ink-navy) !important;
+    border-radius: var(--radius-lg) !important;
+    font-size: 1.3rem !important;
+    min-height: 60px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: background-color var(--transition-fast) !important;
+}
+
+button[key="send_chat_btn"]:hover {
+    background-color: var(--ink-bright) !important;
+    border-color: var(--ink-blue) !important;
+}
+
+button[key="send_chat_btn"]:focus-visible {
+    outline: 2px solid var(--ink-bright) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 3px rgba(61, 90, 153, 0.3) !important;
+}
+
+div[data-testid="stVerticalBlock"] textarea {
+    font-family: var(--hytutor-font-family-ui) !important;
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+    color: var(--text-main) !important;
+}
+
+div[data-testid="stMarkdownContainer"] > p > em,
+div[data-testid="stMarkdownContainer"] > p > em > span {
+    font-size: 0.78rem !important;
+    color: var(--text-secondary) !important;
+    font-family: var(--hytutor-font-family-ui) !important;
+}
+
+div[data-testid="stVerticalBlock"] > div > div > div[data-testid="stVerticalBlock"] > div > div > p {
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+}
+
+/* ===========================================
+   18. RESPONSIVE DESIGN
+   =========================================== */
+
+@media (max-width: 1024px) {
+    .tutor-bubble,
+    .user-bubble {
+        padding: 10px 14px;
+        font-size: 1rem;
+    }
+
+    .metric-tile {
+        padding: 10px 12px;
+    }
+
+    .metric-tile .value {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .tutor-bubble,
+    .user-bubble {
+        padding: 8px 12px;
+        margin-bottom: 10px;
+        font-size: 0.95rem;
+    }
+
+    .metric-tile {
+        margin-bottom: 8px;
+        padding: 8px 10px;
+    }
+
+    .metric-tile .value {
+        font-size: 1.2rem;
+    }
+
+    .metric-tile .label {
+        font-size: 0.72rem;
+    }
+
+    .coming-soon-banner {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+    }
+}
+
+/* ===========================================
+   19. PRINT STYLES
+   =========================================== */
+
+@media print {
+    [data-testid="stSidebar"] {
+        display: none !important;
+    }
+
+    .stApp {
+        background-color: #FFFFFF !important;
+    }
+
+    .tutor-bubble,
+    .user-bubble {
+        border: 1px solid #999 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+    }
+}

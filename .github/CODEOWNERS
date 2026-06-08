@@ -1,0 +1,43 @@
+# CODEOWNERS for HY-TUTOR
+#
+# This file tells GitHub which users should be automatically requested
+# for review on PRs that touch specific paths. The maintainer is the
+# required reviewer for any change that could affect the project's
+# licensing, contribution policy, or community-facing templates.
+#
+# Format: <pattern>  <@github-handle>
+# Order matters: later rules override earlier ones.
+
+# Default: no required reviewer (committers self-review)
+# This is intentional — most PRs are small bug fixes or docs.
+
+# License, contribution, and community-policy files: maintainer must approve
+/LICENSE                                          @AdityaK181225
+/CONTRIBUTING.md                                  @AdityaK181225
+/.github/                                         @AdityaK181225
+
+# The first-run wizard, settings panel, and other interface/ changes
+# also benefit from a maintainer review (we want to keep the UX coherent)
+/interface/components/first_run_wizard.py        @AdityaK181225
+/interface/components/settings_panel.py          @AdityaK181225
+
+# Pipeline code requires discussion before any change
+/core_pipeline/                                   @AdityaK181225
+
+# Anything that touches installation or launch paths should be reviewed
+# by the maintainer (these affect every user's first-run experience)
+/install.sh                                       @AdityaK181225
+/install.ps1                                      @AdityaK181225
+/launch_engine.sh                                 @AdityaK181225
+/launch_engine.bat                                @AdityaK181225
+/make_desktop.sh                                  @AdityaK181225
+/make_desktop.ps1                                 @AdityaK181225
+/hytutor.desktop                                  @AdityaK181225
+
+# README and dependency manifests
+/README.md                                        @AdityaK181225
+/requirements.txt                                 @AdityaK181225
+/.gitignore                                       @AdityaK181225
+/.editorconfig                                    @AdityaK181225
+/.gitattributes                                   @AdityaK181225
+/config/                                          @AdityaK181225

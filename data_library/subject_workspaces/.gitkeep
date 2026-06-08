@@ -1,0 +1,2 @@
+# Per-subject isolated workspaces. The pipeline writes chapters, vector
+# DB, recovery state, etc. here at runtime.

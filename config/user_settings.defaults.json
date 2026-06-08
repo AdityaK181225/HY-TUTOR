@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "last_modified": null,
+
+  "_meta": {
+    "comment": "HY-TUTOR user settings. Editable via the gear icon in the top-right. Any keys missing here will be replaced by the defaults shipped with the app on next boot."
+  },
+
+  "ai_models": {
+    "_meta": "Coming soon \u2014 backend integration pending. All sub-keys are visible in the UI but disabled.",
+    "api_provider": "google_gemini",
+    "default_model": "gemini-3.5-flash",
+    "per_command_overrides": {
+      "command_0_syllabus": null,
+      "command_0_1_editor": null,
+      "command_0_5_router": null,
+      "command_1_blueprint": null,
+      "command_2_miner": null,
+      "command_3_optimizer": null,
+      "command_4_bridge": null,
+      "command_5_forge": null,
+      "command_5_5_injector": null,
+      "command_6_tutor": null,
+      "command_7_ledger": null
+    },
+    "max_retries": 3,
+    "timeout_per_call": 60,
+    "ollama_model": "gemma4:e2b",
+    "tutor_persona": "socratic"
+  },
+
+  "usage": {
+    "_meta": "Read-only aggregated stats derived from data_library/usage_log.jsonl.",
+    "track_calls": true,
+    "reset_at": null
+  },
+
+  "appearance": {
+    "theme": "scholarly_ink",
+    "_theme_options_visible": ["scholarly_ink", "midnight_library", "auto_system"],
+    "font_family": "Georgia",
+    "code_font_family": "Fira Code",
+    "font_size": "medium",
+    "magnification_pct": 100,
+    "ui_density": "comfortable",
+    "accent_color": "#2C4A7C",
+    "background_color": "#FAF8F5",
+    "box_color": "#FFFFFF",
+    "box_border_color": "#C8D0DC",
+    "button_color": "#2C4A7C",
+    "sidebar_color": "#1B2A4A",
+    "text_color_enabled": false,
+    "text_color": "#1A1A2E",
+    "reduce_motion": false,
+    "high_contrast_borders": false
+  },
+
+
+  "files_storage": {
+    "auto_cleanup_on_exit": false,
+    "show_disk_usage_banner": true
+  },
+
+  "behavior": {
+    "auto_advance_chunk": false,
+    "confirm_before_rerun": true,
+    "show_button_tooltips": true,
+    "default_difficulty_filter": "All",
+    "default_results_count": 5,
+    "chat_auto_save": true,
+    "verbose_pipeline_logs": false,
+    "sound_on_completion": false
+  },
+
+  "updates": {
+    "channel": "stable",
+    "auto_check_on_boot": true,
+    "last_check_iso": null,
+    "last_known_local_head": null
+  }
+}

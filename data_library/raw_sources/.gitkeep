@@ -1,0 +1,2 @@
+# Upload destination for CBSE/NCERT/Reference/Exemplar source documents
+# (see interface/app.py upload form). Each subject gets its own subfolder.

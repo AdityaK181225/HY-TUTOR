@@ -1,0 +1,67 @@
+# HY-TUTOR: Production Dependencies
+# Python 3.10+ required
+# Install with:  pip install -r requirements.txt
+
+# ============================================================================
+# CORE DEPENDENCIES
+# ============================================================================
+
+# Google GenAI for LLM API access
+google-genai>=0.5.0
+
+# Pydantic for data validation
+pydantic>=2.0.0
+
+# Environment variable management
+python-dotenv>=1.0.0
+
+# Streamlit for web interface
+streamlit>=1.28.0
+
+# Altair for declarative chart specs (used in settings panel)
+altair>=5.0.0
+
+# ============================================================================
+# UTILITY DEPENDENCIES
+# ============================================================================
+
+# File locking for race condition prevention
+filelock>=3.12.0
+
+# Numerical operations for embedding compression
+numpy>=1.24.0
+
+# Vector database for semantic search
+chromadb>=0.4.0
+
+# PDF reading (3-tier fallback)
+pypdf2>=3.0.0
+pdfminer.six>=20221105
+
+# HTTP requests (Gemini API client uses urllib, but other utilities need it)
+requests>=2.31.0
+
+# ============================================================================
+# OPTIONAL DEPENDENCIES
+# ============================================================================
+
+# High-quality PDF extraction (uncomment if needed)
+# marker-pdf>=0.2.0
+
+# ============================================================================
+# DEVELOPMENT DEPENDENCIES (Optional)
+# ============================================================================
+
+# For testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# For type checking
+mypy>=1.5.0
+
+# For code formatting
+black>=23.9.0
+isort>=5.12.0
+
+# For linting
+flake8>=6.1.0

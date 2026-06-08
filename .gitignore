@@ -1,0 +1,165 @@
+# ============================================================================
+# HY-TUTOR — fresh-clone / production-ready exclusions
+# ----------------------------------------------------------------------------
+# Anything that is NOT required to RUN the system at runtime is excluded
+# from the repo. When a new user clones this repository, they should get a
+# pristine template: no dev notes, no test code, no helper scripts, no
+# user uploads, no pipeline output, no progress data.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# Runtime state — system-generated files that should NEVER be committed
+# ----------------------------------------------------------------------------
+
+# Per-user progress / completion ledger (long-term mastery + study time)
+data_library/Global_Subject_Tracker.json
+
+# Generated syllabus + metadata contents (the directory is kept via .gitkeep)
+data_library/metadata/*
+!data_library/metadata/.gitkeep
+data_library/metadata/.syllabus_backup_*/
+
+# Per-user UI state, settings, update cache (directories kept via .gitkeep)
+data_library/user_state/*
+!data_library/user_state/.gitkeep
+data_library/active_workspace/*
+!data_library/active_workspace/.gitkeep
+data_library/active_workspace/active_chapter_workspace.json
+
+# Generated active-subject marker (inside subject_workspaces, which is kept)
+data_library/subject_workspaces/.current_subject
+
+# Per-subject workspaces — directory is kept, contents are ignored
+data_library/subject_workspaces/*
+!data_library/subject_workspaces/.gitkeep
+data_library/subject_workspaces/*/.blueprint_backup_*/
+data_library/subject_workspaces/*/.syllabus_backup_*/
+
+# Pipeline output caches (directories kept via .gitkeep)
+data_library/recovery/*
+!data_library/recovery/.gitkeep
+data_library/cache/*
+!data_library/cache/.gitkeep
+data_library/vector_db/*
+
+# Chapter cache (legacy)
+chapter_cache/
+
+# User uploads (raw_sources dir is kept, contents are not)
+data_library/raw_sources/*
+!data_library/raw_sources/.gitkeep
+
+# Usage log + test backup of usage log (may contain API metadata)
+data_library/usage_log.jsonl
+data_library/usage_log.jsonl.test_backup
+
+# ----------------------------------------------------------------------------
+# Dev / changelog / planning — never ship these; README.md is the only doc
+# ----------------------------------------------------------------------------
+
+docs/
+CHANGES.md
+CHANGES_PHASE1.md
+implementation_plan.md
+verify_chart.py
+
+# ----------------------------------------------------------------------------
+# Test code
+# ----------------------------------------------------------------------------
+
+tests/
+
+# ----------------------------------------------------------------------------
+# Dev utility scripts (cleanup, migration, etc.)
+# ----------------------------------------------------------------------------
+
+scripts/
+
+# ----------------------------------------------------------------------------
+# Per-IDE workspace files
+# ----------------------------------------------------------------------------
+
+HY-TUTOR.code-workspace
+.vscode/
+.idea/
+.clinerules/
+# Allow specific files inside .github/ to ship (PR template, CODEOWNERS,
+# issue templates, workflows, etc.) while keeping the rest of .github/
+# ignored. We don't blanket-allow the .github/ directory itself because
+# some users keep personal dotfiles there (e.g. .github/CODEOWNERS.backup)
+# that shouldn't be committed. Add specific exceptions below as needed.
+!.github/CODEOWNERS
+!.github/PULL_REQUEST_TEMPLATE.md
+!.github/PULL_REQUEST_TEMPLATE/
+!.github/ISSUE_TEMPLATE/
+!.github/ISSUE_TEMPLATE.md
+!.github/FUNDING.yml
+!.github/*.md
+!.github/*.yml
+!.github/*.yaml
+
+
+
+# ----------------------------------------------------------------------------
+# Python / virtualenv
+# ----------------------------------------------------------------------------
+
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ----------------------------------------------------------------------------
+# Environment variables / secrets
+# ----------------------------------------------------------------------------
+
+.env
+.env.local
+.env.*.local
+config/.env
+
+# ----------------------------------------------------------------------------
+# Logs / caches / coverage
+# ----------------------------------------------------------------------------
+
+*.log
+logs/
+coverage/
+.tox/
+.nox/
+.pytest_cache/
+
+# ----------------------------------------------------------------------------
+# OS / editor
+# ----------------------------------------------------------------------------
+
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# ----------------------------------------------------------------------------
+# Local overrides / temp files
+# ----------------------------------------------------------------------------
+
+*.local
+*.tmp
+*.temp
