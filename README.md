@@ -26,7 +26,7 @@ This project was developed with **significant assistance from AI tools (large la
 - **Code generation** — ChromaDB integration, the auto-update + pip-install flow, the `index_active_chunk()` helper, the `read_pdf_text` removal, the multi-file concatenation helper
 
 
-All **architectural decisions, code review, and final integration** were performed by the human maintainer. AI was an amplifier of the maintainer's intent, not a replacement for it. The full trail of AI-assisted refactors is captured in the [📝 Changes](#-changes) section below.
+All **architectural decisions, code review, and final integration** were performed by the human maintainer. AI was an amplifier of the maintainer's intent, not a replacement for it. 
 
 ---
 
