@@ -13,11 +13,12 @@
 if [ -t 1 ]; then
     GREEN='\033[0;32m'
     RED='\033[0;31m'
+    YELLOW='\033[0;33m'
     CYAN='\033[0;36m'
     BLUE='\033[0;34m'
     NC='\033[0m'
 else
-    GREEN=''; RED=''; CYAN=''; BLUE=''; NC=''
+    GREEN=''; RED=''; YELLOW=''; CYAN=''; BLUE=''; NC=''
 fi
 
 # Always run from the repo root (where this script lives)
@@ -55,12 +56,12 @@ fi
 # Source only GEMINI_API_KEY, ignoring comments and other vars
 GEMINI_API_KEY=$(grep -E '^GEMINI_API_KEY=' "$ENV_FILE" | cut -d'=' -f2- | tr -d '[:space:]' || true)
 if [ -z "$GEMINI_API_KEY" ]; then
-    echo -e "${RED}[fatal] GEMINI_API_KEY is empty in $ENV_FILE.${NC}"
-    echo -e "${RED}        Re-run 'bash install.sh --reset-key' or use the in-app wizard.${NC}"
-    exit 1
+    echo -e "${RED}[warn] GEMINI_API_KEY is empty in $ENV_FILE.${NC}"
+    echo -e "${YELLOW}       The in-app First-Run Wizard will guide you through setup.${NC}"
+else
+    export GEMINI_API_KEY
+    echo -e "${GREEN}[ok] Loaded GEMINI_API_KEY${NC}"
 fi
-export GEMINI_API_KEY
-echo -e "${GREEN}[ok] Loaded GEMINI_API_KEY${NC}"
 
 # --- 3. Launch Streamlit -----------------------------------------------------
 echo -e "${BLUE}====================================================${NC}"

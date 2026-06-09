@@ -2,8 +2,9 @@
 HY-TUTOR: First-Run Wizard
 ===========================
 Renders a small Streamlit panel if the app is launched without a configured
-GEMINI_API_KEY. The wizard writes the key to ``config/.env`` and tells the
-user to refresh the page.
+GEMINI_API_KEY. The wizard writes the key to ``config/.env`` and then
+redirects straight to the main dashboard.  It is shown **only once** —
+on the very first launch.
 
 Called from the top of ``interface/app.py``:
     from components.first_run_wizard import maybe_render_first_run_wizard
@@ -31,6 +32,14 @@ except Exception:  # pragma: no cover — best-effort import
 
 # Gemini keys from aistudio.google.com start with "AIza" and are ~39 chars.
 _GEMINI_KEY_RE = re.compile(r"^AIza[A-Za-z0-9_\-]{30,50}$")
+
+# Link where users can obtain a free Gemini API key.
+_GEMINI_KEY_URL = (
+    "https://aistudio.google.com/apikey?authuser=1"
+    "&_gl=1*ms56u1*_ga*MTk5Njg3MjQzMC4xNzgwNjU5MjUw*"
+    "_ga_P1DBVKWT6V*czE3ODA5NzM2MjEkbzIkZzEkdDE3ODA5NzM5MTAkajYwJGwwJGg2"
+    "MjA5NDg1Ng.."
+)
 
 
 def _repo_root() -> Path:
@@ -101,32 +110,15 @@ def _save_key(api_key: str) -> Tuple[bool, str]:
         return False, f"Failed to write {env_file}: {exc}"
 
 
-def _has_raw_sources() -> bool:
-    """True if the user has uploaded at least one source file in any subject."""
-    raw = _repo_root() / "data_library" / "raw_sources"
-    if not raw.exists():
-        return False
-    for subject_dir in raw.iterdir():
-        if not subject_dir.is_dir():
-            continue
-        if any(subject_dir.rglob("*")):
-            return True
-    return False
-
-
 def maybe_render_first_run_wizard() -> bool:
-    """Render the wizard if needed.
+    """Render the wizard **only** when no GEMINI_API_KEY has been configured.
 
     Returns:
         True if the wizard was shown (caller should ``st.stop()``),
-        False if everything is configured and the app should render normally.
+        False if the key exists and the app should render normally.
     """
-    existing_key = _read_existing_key()
-    has_sources = _has_raw_sources()
-    needs_key = not existing_key
-
-    if not needs_key and has_sources:
-        # Everything is set up — let the app render normally.
+    if _read_existing_key():
+        # Key already set — never show the wizard again.
         return False
 
     # --- Wizard UI -----------------------------------------------------------
@@ -146,95 +138,82 @@ def maybe_render_first_run_wizard() -> bool:
             box-shadow: 0 8px 32px rgba(120, 90, 30, 0.08);
         }
         .hytutor-wizard-wrap h1 { margin-top: 0; }
-        .hytutor-wizard-step {
-            padding: 0.8rem 1rem;
-            margin: 0.6rem 0;
-            border-radius: 10px;
-            background: #FFFCF1;
-            border-left: 4px solid #C8A24A;
+        .hytutor-api-link {
+            display: inline-block;
+            padding: 6px 14px;
+            margin: 4px 0 12px 0;
+            border-radius: 8px;
+            background: #E8F0FE;
+            border: 1px solid #4285F4;
+            color: #1A73E8;
+            font-weight: 600;
+            text-decoration: none;
         }
+        .hytutor-api-link:hover { background: #D2E3FC; }
     </style>
     """
     st.markdown(_css, unsafe_allow_html=True)
     st.markdown('<div class="hytutor-wizard-wrap">', unsafe_allow_html=True)
 
-    st.markdown("# " + icon("rocket_launch", size=28) + "  Welcome to HY-TUTOR", unsafe_allow_html=False)
     st.markdown(
-        "Let's get you set up. You only need to do this once — your settings "
-        "will be saved to `config/.env`."
+        f'<h1 style="display:flex;align-items:center;gap:8px;">'
+        f'{icon("rocket_launch", size=28)} Welcome to HY-TUTOR</h1>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        "Let's get you set up. You only need to do this **once** — your "
+        "API key will be saved locally and the wizard will never appear again."
     )
 
-    # --- Step 1: API key ----------------------------------------------------
-    if needs_key:
-        st.markdown("### Step 1 — Add your Gemini API key")
-        st.markdown(
-            "HY-TUTOR uses Google's Gemini API to compile lessons and tutor you. "
-            "Grab a free key from "
-            "[Google AI Studio](https://aistudio.google.com/app/apikey) and "
-            "paste it below."
-        )
-        with st.form("hytutor_first_run_key_form", clear_on_submit=False):
-            api_key = st.text_input(
-                "GEMINI_API_KEY",
-                type="password",
-                placeholder="AIza...",
-                help="The key looks like AIzaSy... (39 characters). It's stored locally in config/.env with mode 600.",
-            )
-            submitted = st.form_submit_button("Save and continue", type="primary", use_container_width=True)
+    # --- API key form --------------------------------------------------------
+    st.markdown("### Add your Gemini API key")
+    st.markdown(
+        "HY-TUTOR uses Google's Gemini API to compile lessons and tutor you."
+    )
+    st.markdown(
+        f'<a class="hytutor-api-link" href="{_GEMINI_KEY_URL}" '
+        f'target="_blank" rel="noopener">🔑 &nbsp;Get a free Gemini API key here</a>',
+        unsafe_allow_html=True,
+    )
+    st.markdown("Then paste it below:")
 
-            if submitted:
-                if not _GEMINI_KEY_RE.match(api_key.strip()):
-                    st.error(
-                        "That doesn't look like a valid Gemini key. "
-                        "It should start with `AIza` and be about 39 characters long. "
-                        "Double-check the value you copied."
-                    )
+    with st.form("hytutor_first_run_key_form", clear_on_submit=False):
+        api_key = st.text_input(
+            "GEMINI_API_KEY",
+            type="password",
+            placeholder="AIza...",
+            help=(
+                "The key looks like AIzaSy... (about 39 characters). "
+                "It is stored locally in config/.env with mode 600."
+            ),
+        )
+        submitted = st.form_submit_button(
+            "Save and continue", type="primary", use_container_width=True,
+        )
+
+        if submitted:
+            if not _GEMINI_KEY_RE.match(api_key.strip()):
+                st.error(
+                    "That doesn't look like a valid Gemini key. "
+                    "It should start with `AIza` and be about 39 characters long. "
+                    "Double-check the value you copied."
+                )
+            else:
+                ok, msg = _save_key(api_key.strip())
+                if ok:
+                    st.success(f"✅ {msg}")
+                    st.session_state["_wizard_key_saved"] = True
                 else:
-                    ok, msg = _save_key(api_key.strip())
-                    if ok:
-                        st.success(f"✅ {msg}. Refreshing the page…")
-                        # Tell the user (and the caller) to reload.
-                        st.info(
-                            "The key is saved. **Click the button below to "
-                            "restart HY-TUTOR with the new settings.**"
-                        )
-                        if st.button("🔄 Restart HY-TUTOR"):
-                            st.cache_data.clear()
-                            st.rerun()
-                        st.stop()
-                    else:
-                        st.error(msg)
-    else:
-        st.markdown("### Step 1 — ✅ Gemini API key configured")
-        with st.expander("Change the API key"):
-            with st.form("hytutor_change_key_form"):
-                new_key = st.text_input("New GEMINI_API_KEY", type="password", placeholder="AIza...")
-                if st.form_submit_button("Update key"):
-                    if not _GEMINI_KEY_RE.match(new_key.strip()):
-                        st.error("That doesn't look like a valid Gemini key.")
-                    else:
-                        ok, msg = _save_key(new_key.strip())
-                        if ok:
-                            st.success(f"✅ {msg}. Restart HY-TUTOR to apply.")
-                            if st.button("🔄 Restart HY-TUTOR"):
-                                st.rerun()
-                        else:
-                            st.error(msg)
+                    st.error(msg)
 
-    # --- Step 2: Source materials hint --------------------------------------
-    st.markdown("### Step 2 — Upload syllabus materials (next)")
-    if has_sources:
-        st.markdown("✅ Source materials detected in `data_library/raw_sources/`.")
-    else:
-        st.markdown(
-            '<div class="hytutor-wizard-step">'
-            "After this setup screen, HY-TUTOR will ask you to upload your "
-            "syllabus files (CBSE guidelines, NCERT TOC, reference book TOC, "
-            "and exemplar question bank) for each subject you want to study. "
-            "You can use `.md` or `.txt` exports."
-            "</div>",
-            unsafe_allow_html=True,
-        )
+    # --- After key is saved: redirect straight to the dashboard ---------------
+    if st.session_state.get("_wizard_key_saved"):
+        st.info("Key saved! Redirecting to HY-TUTOR…")
+        if st.button("🚀 Go to Dashboard", type="primary"):
+            st.session_state.pop("_wizard_key_saved", None)
+            st.cache_data.clear()
+            st.rerun()
+        st.stop()
 
     st.markdown(
         "<sub>Need help? See the project README or open an issue on GitHub.</sub>",
@@ -242,7 +221,4 @@ def maybe_render_first_run_wizard() -> bool:
     )
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # If the key is set but the user hasn't yet, we still render the wizard
-    # so they can see the source-uploads hint. Caller should st.stop() so the
-    # main app doesn't run with a half-configured state.
     return True

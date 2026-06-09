@@ -44,11 +44,11 @@ for /f "usebackq tokens=1,* delims==" %%A in ("%ENV_FILE%") do (
 )
 
 if "!GEMINI_API_KEY!"=="" (
-    echo [fatal] GEMINI_API_KEY is empty in %ENV_FILE%. Run install.ps1 -ResetKey to set it.
-    pause
-    exit /b 1
+    echo [warn] GEMINI_API_KEY is empty in %ENV_FILE%.
+    echo         The in-app First-Run Wizard will guide you through setup.
+) else (
+    echo [ok] Loaded GEMINI_API_KEY from %ENV_FILE%
 )
-echo [ok] Loaded GEMINI_API_KEY from %ENV_FILE%
 
 REM --- 3. Launch Streamlit -----------------------------------------------------
 echo.

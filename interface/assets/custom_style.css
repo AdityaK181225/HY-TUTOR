@@ -420,7 +420,9 @@ button[data-testid="stPopoverButton"] [data-testid="stMarkdownContainer"] p {
         because the same icon makes sense for both open and closed.
    The hamburger glyph is the same in both states (open / closed sidebar),
    since the icon represents the MENU rather than a direction. */
-[data-testid="stSidebarCollapseButton"] {
+[data-testid="stSidebarCollapseButton"],
+[data-testid="stExpandSidebarButton"],
+button[data-testid="stBaseButton-headerNoPadding"] {
     visibility: visible !important;
     opacity: 1 !important;
 }
@@ -428,6 +430,7 @@ button[data-testid="stPopoverButton"] [data-testid="stMarkdownContainer"] p {
 button[data-testid="stBaseButton-headerNoPadding"],
 [data-testid="stSidebar"] button[data-testid="stSidebarCollapseButton"],
 [data-testid="stSidebar"] button[aria-label="Close sidebar"],
+button[data-testid="stExpandSidebarButton"],
 [data-testid="stSidebar"] button[aria-label="Open sidebar"] {
     visibility: visible !important;
     opacity: 1 !important;
@@ -463,7 +466,7 @@ button[data-testid="stBaseButton-headerNoPadding"],
 button[data-testid="stBaseButton-headerNoPadding"]:hover,
 [data-testid="stSidebar"] button[data-testid="stSidebarCollapseButton"]:hover,
 [data-testid="stSidebar"] button[aria-label="Close sidebar"]:hover,
-[data-testid="stSidebar"] button[aria-label="Open sidebar"]:hover {
+button[data-testid="stExpandSidebarButton"]:hover {
     background-color: var(--ink-bright) !important;
     transform: scale(1.05) !important;
     /* Re-declare the hamburger lines so the hover background doesn't erase them */
@@ -481,6 +484,9 @@ button[data-testid="stBaseButton-headerNoPadding"] [data-testid="stIconMaterial"
 button[data-testid="stBaseButton-headerNoPadding"] span.material-icons,
 button[data-testid="stBaseButton-headerNoPadding"] span.material-icons-outlined,
 button[data-testid="stBaseButton-headerNoPadding"] span[class*="material-icons"],
+button[data-testid="stExpandSidebarButton"] [data-testid="stIconMaterial"],
+button[data-testid="stExpandSidebarButton"] span.material-icons,
+button[data-testid="stExpandSidebarButton"] span[class*="material-icons"],
 [data-testid="stSidebar"] button[data-testid="stSidebarCollapseButton"] [data-testid="stIconMaterial"],
 [data-testid="stSidebar"] button[aria-label="Close sidebar"] [data-testid="stIconMaterial"],
 [data-testid="stSidebar"] button[aria-label="Open sidebar"] [data-testid="stIconMaterial"] {

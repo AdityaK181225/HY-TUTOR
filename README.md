@@ -272,11 +272,44 @@ for windows and linux
 - multiple SDK backend wiring has been completed (slated to become active via tab 1 of settings in the future upgrades)
 - PDF inputs were a hanging pseudo-dead code thus have been removed temporarily for program optimization. Will be added soon
 **( Kindly use marker-pdf/similar to convert your pdf to markdown. Suggested method is to use google collab or similar to run marker-pdf and convert)**
+
+### [v1.$\alpha$.1] — 2026-06-09 — FIRST-RUN WIZARD + LAUNCH FIXES
+- **First-run wizard redesigned** — now shows only once (when `GEMINI_API_KEY` is missing), with a highlighted link to obtain a free key from Google AI Studio. After saving the key, a single click takes the user straight to the main dashboard.
+- **Launch engine graceful degradation** — `launch_engine.sh` and `launch_engine.bat` no longer abort when `GEMINI_API_KEY` is empty; they warn and let Streamlit start so the in-app wizard can handle key setup.
+- **Sidebar expand button** — fixed the hamburger icon not rendering when the sidebar is closed (corrected `data-testid` selector in `custom_style.css`).
 ---
 
 ## Bug Fixes
 
 > Bug entries the maintainer has fixed in the codebase. Each entry includes the symptom, the root cause, and what the fix was.
+
+### Bug #002 — Launch engine aborts when GEMINI_API_KEY is empty ✅ Fixed (2026-06-09)
+
+**Severity:** High (blocks first launch entirely)
+**Area:** `launch_engine.sh`, `launch_engine.bat`
+
+**Symptom**
+After a fresh clone + `install.sh`, running `bash launch_engine.sh` would print a fatal error and exit before Streamlit ever started, even though the in-app First-Run Wizard was designed to collect the key.
+
+**Root cause**
+`launch_engine.sh` and `launch_engine.bat` both performed `exit 1` when `GEMINI_API_KEY` was empty, preventing Streamlit from launching. The in-app wizard never got a chance to run.
+
+**Fix**
+Changed the empty-key check from a fatal exit to a warning. Streamlit now starts regardless, and the First-Run Wizard handles key setup.
+
+### Bug #003 — Sidebar expand button not visible when sidebar is closed ✅ Fixed (2026-06-09)
+
+**Severity:** Medium (UI usability)
+**Area:** `interface/assets/custom_style.css`
+
+**Symptom**
+When the sidebar was collapsed, the expand button (hamburger icon) was not visible or showed raw `keyboard_double_arrow_right` text instead of the styled hamburger icon.
+
+**Root cause**
+The CSS targeted `button[aria-label="Open sidebar"]` but the actual expand button has `data-testid="stBaseButton-headerNoPadding"` with an empty `aria-label`. The selectors never matched.
+
+**Fix**
+Updated all sidebar-toggle CSS selectors to use the correct `data-testid="stBaseButton-headerNoPadding"` and `data-testid="stExpandSidebarButton"` selectors. Both the open and closed states now render a consistent ink-blue pill with three white hamburger lines.
 
 ### Bug #000 — Syllabus Editor crashes on chat-style prompts ✅ Fixed (2026-05-06)
 
@@ -357,7 +390,7 @@ The palette *does* work when clicked directly — the dashboard updates instantl
 ## 🛠 Troubleshooting
 
 - **"ModuleNotFoundError" on launch** — your `.venv` is missing. Run `bash install.sh` (Linux/macOS) or `.\install.ps1` (Windows).
-- **"GEMINI_API_KEY is empty"** — set it in `config/.env` (or re-run the installer with the `--reset-key` flag, or use the in-app **First-Run Wizard** on the first launch).
+- **"GEMINI_API_KEY is empty"** — the launch engine now shows a warning and lets Streamlit start. The in-app **First-Run Wizard** will guide you through setting the key on first launch.
 - **Streamlit doesn't open a browser** — manually visit `http://localhost:8501`.
 - **Desktop icon doesn't show up on Linux** — your file manager may need a refresh, or you may need to right-click → "Allow Launching" on the file.
 - **Windows: "running scripts is disabled on this system"** — prepend `powershell -ExecutionPolicy Bypass` to the command, as shown in the Quick Start above.
