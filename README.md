@@ -143,52 +143,70 @@ The real-time pipeline runner shows each DAG node with status badges, re-run but
 - **4 GB+ RAM** and a modern browser
 - **No GPU required** — Gemini runs in the cloud
 
-### Linux
+---
+
+### 🟢 Easiest: One-Click Smart Start (Recommended)
+
+This script handles **everything** automatically — Python detection, dependency installation, API key setup, and desktop shortcut creation.
+
+**Linux / macOS:**
 
 ```bash
-# 1. Clone the repo
+git clone https://github.com/AdityaK181225/HY-TUTOR.git
+cd HY-TUTOR
+bash start.sh
+```
+
+**Windows:**
+
+Download the `.zip` from [Releases](https://github.com/AdityaK181225/HY-TUTOR/releases), extract it, and double-click `start.bat`.
+
+What `start.sh` / `start.bat` does automatically:
+1. Checks for Python 3.10+ (installs if missing)
+2. Creates virtual environment + installs dependencies
+3. Sets up API key (or uses the in-app wizard)
+4. Creates a **desktop shortcut** with the HY-TUTOR icon
+5. Launches the app and opens your browser
+
+> **After first run, use the desktop shortcut to launch directly.** No terminal needed.
+
+---
+
+### 🟡 Standard: Manual Setup
+
+#### Linux
+
+```bash
 git clone https://github.com/AdityaK181225/HY-TUTOR.git
 cd HY-TUTOR
 
-# 2. Run the one-shot installer
+# Run the one-shot installer
 bash install.sh
 
-# 3. (Optional) Add the desktop icon — appears in your app menu and on your Desktop
+# (Optional) Add the desktop icon
 bash make_desktop.sh
 
-# 4. Launch
+# Launch
 bash launch_engine.sh
 ```
 
-### Windows (PowerShell)
+#### Windows (PowerShell)
 
 ```powershell
-# 1. Clone the repo
 git clone https://github.com/AdityaK181225/HY-TUTOR.git
 cd HY-TUTOR
 
-# 2. Run the one-shot installer
+# Run the one-shot installer
 powershell -ExecutionPolicy Bypass -File .\install.ps1
 
-# 3. (Optional) Add a desktop + Start Menu shortcut
+# (Optional) Add a desktop + Start Menu shortcut
 powershell -ExecutionPolicy Bypass -File .\make_desktop.ps1
 
-# 4. Launch
+# Launch
 .\launch_engine.bat
 ```
 
 Your browser will open `http://localhost:8501` automatically.
-
-### What the installer does
-
-1. Detects Python 3.10+ (or guides you to install it)
-2. Creates a `.venv/` virtual environment
-3. Installs all `requirements.txt` packages
-4. Seeds `config/.env` from `config/.env.example`
-5. Prompts (masked) for your Gemini API key and saves it to `config/.env`
-6. Validates the key format (`^AIza[A-Za-z0-9_-]{30,50}$`)
-
-If you skip the key prompt, the in-app **First-Run Wizard** will collect it when Streamlit first loads.
 
 ---
 
